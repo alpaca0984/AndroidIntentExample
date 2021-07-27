@@ -1,6 +1,7 @@
 package com.example.jetpackcomposeplayground
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.provider.AlarmClock
 import androidx.activity.compose.setContent
@@ -48,6 +49,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // register broadcast receivers
+        registerReceiver(
+            AirplaneModeBroadcastReceiver(),
+            IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+        )
     }
 }
 
