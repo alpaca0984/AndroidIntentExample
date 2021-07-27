@@ -1,4 +1,4 @@
-package com.example.jetpackcomposeplayground
+package com.example.androidintentexample
 
 import android.content.Intent
 import android.content.IntentFilter
@@ -21,7 +21,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.jetpackcomposeplayground.ui.theme.JetpackComposePlaygroundTheme
+import com.example.androidintentexample.ui.theme.AndroidIntentExampleTheme
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            JetpackComposePlaygroundTheme {
+            AndroidIntentExampleTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     Column(
@@ -134,7 +134,7 @@ fun ImplicitIntentNavigation(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    JetpackComposePlaygroundTheme {
+    AndroidIntentExampleTheme {
         Greeting("Android")
     }
 }

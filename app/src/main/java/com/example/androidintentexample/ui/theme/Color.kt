@@ -1,4 +1,4 @@
-package com.example.jetpackcomposeplayground.ui.theme
+package com.example.androidintentexample.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

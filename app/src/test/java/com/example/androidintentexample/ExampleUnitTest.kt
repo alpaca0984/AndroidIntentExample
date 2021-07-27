@@ -1,4 +1,4 @@
-package com.example.jetpackcomposeplayground
+package com.example.androidintentexample
 
 import org.junit.Test
 
