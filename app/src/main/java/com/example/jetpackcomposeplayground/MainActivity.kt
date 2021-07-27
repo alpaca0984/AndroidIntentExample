@@ -2,8 +2,9 @@ package com.example.jetpackcomposeplayground
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import android.provider.AlarmClock
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,9 +19,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.jetpackcomposeplayground.ui.theme.JetpackComposePlaygroundTheme
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,15 +37,13 @@ class MainActivity : ComponentActivity() {
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        val textState = remember { mutableStateOf(TextFieldValue()) }
                         Greeting("Here is MainActivity")
-                        TextField(
-                            value = textState.value,
-                            onValueChange = { textState.value = it },
-                            modifier = Modifier.padding(16.dp),
-                            maxLines = 1,
+                        ExplicitIntentNavigation(
+                            modifier = Modifier.padding(top = 64.dp)
                         )
-                        Navigation(message = textState.value.text)
+                        ImplicitIntentNavigation(
+                            modifier = Modifier.padding(top = 64.dp)
+                        )
                     }
                 }
             }
@@ -51,24 +53,74 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+    Text(
+        text = "Hello $name!",
+        fontSize = 24.sp
+    )
 }
 
 @Composable
-fun Navigation(message: String) {
+fun ExplicitIntentNavigation(
+    modifier: Modifier = Modifier
+) {
     val context = LocalContext.current
+    val textState = remember { mutableStateOf(TextFieldValue()) }
+
+    Text(
+        text = "An example of explicit intent",
+        modifier = modifier,
+    )
+    TextField(
+        value = textState.value,
+        onValueChange = { textState.value = it },
+        modifier = Modifier.padding(top = 16.dp),
+        label = { Text("The message will be sent to the activity") },
+        maxLines = 1,
+    )
     Button(
         onClick = {
             val intent = Intent(
                 context,
                 FooActivity::class.java
             ).apply {
-                putExtra(INTENT_KEY_MESSAGE, message)
+                putExtra(Intent.EXTRA_TEXT, textState.value.text)
             }
             context.startActivity(intent)
-        }
+        },
+        modifier = Modifier.padding(top = 16.dp)
     ) {
-        Text(text = "Go to FooActivity!")
+        Text(text = "Go to another activity")
+    }
+}
+
+@Composable
+fun ImplicitIntentNavigation(
+    modifier: Modifier = Modifier
+) {
+    val activity = LocalContext.current as AppCompatActivity
+    val timePicker = MaterialTimePicker.Builder()
+        .setTimeFormat(TimeFormat.CLOCK_12H)
+        .setTitleText("Select Alarm time")
+        .build()
+    timePicker.addOnPositiveButtonClickListener {
+        val intent = Intent(AlarmClock.ACTION_SET_ALARM).apply {
+            putExtra(AlarmClock.EXTRA_HOUR, timePicker.hour)
+            putExtra(AlarmClock.EXTRA_MINUTES, timePicker.minute)
+        }
+        activity.startActivity(intent)
+    }
+
+    Text(
+        text = "An example of implicit intent",
+        modifier = modifier,
+    )
+    Button(
+        onClick = {
+            timePicker.show(activity.supportFragmentManager, "tag")
+        },
+        modifier = Modifier.padding(top = 16.dp)
+    ) {
+        Text(text = "Set Alarm")
     }
 }
 

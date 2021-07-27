@@ -1,5 +1,6 @@
 package com.example.jetpackcomposeplayground
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,7 +16,7 @@ class FooActivity : ComponentActivity() {
             JetpackComposePlaygroundTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    val message = intent.getStringExtra(INTENT_KEY_MESSAGE).orEmpty()
+                    val message = intent.getStringExtra(Intent.EXTRA_TEXT).orEmpty()
                     Greeting("FooActivity: $message")
                 }
             }
